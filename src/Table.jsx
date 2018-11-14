@@ -1,6 +1,53 @@
 import React  from 'react'
 import {Link} from 'react-router-dom'
 
+const DEFAULT_COL = '#'
+const STRING_COLS = ['City', 'Country']
+
+// SORT METHOD -----------------------------------------------------------------
+
+const sortRows = (rows, column) => {
+
+  const colType = STRING_COLS.includes(column) ? 'string' : 'number'
+
+  // ensure vals are of the right type - num or string
+  const cast = val => {
+    if (colType === 'string') return `${val}`
+    if (colType === 'number') {
+      if (typeof val === 'string') {
+        val = val.replace(/[, ]+/g, "").trim() // remove spaces and commas
+      }
+      return Number(val)                       // cast to a number
+    }
+    return null
+  }
+
+  // ensure vals exist before sorting
+  const check = val => typeof val !== 'undefined' && val !== null
+    ? cast(val)
+    : null
+
+  const sortMethods = {
+    'string': rows => rows.sort((a, b) => {
+      const valA = check(a[column])
+      const valB = check(b[column])
+      return valA.localeCompare(valB)
+    }),
+
+    'number': rows => rows.sort((a, b) => {
+      const valA = check(a[column])
+      const valB = check(b[column])
+      return valA - valB
+    })
+  }
+
+  return sortMethods[colType](rows) || rows
+}
+
+
+// TABLE COMPONENT -------------------------------------------------------------
+
+let sortUp = false
 
 export default ({match, rows}) => {
 
@@ -18,7 +65,38 @@ export default ({match, rows}) => {
     return headersList
   }, [])
 
+  // sanitize the data rows by removing any rows with no values
+  rows = rows.filter(row => Object.values(row).some(val => val))
+
+  // check column exists! If not render the default.
+  let columnMsg = `Showing cities sorted by '${column}'`
+  let columnMsgClass = ""
+  if (!headings.includes(column)) {
+    columnMsg = `No columns match the URL '${match.params.column}'.`
+    columnMsgClass = " error"
+    column = DEFAULT_COL
+  }
+
+  // sort rows based on column choice
+  const displayRows = sortRows(rows, column)
+
+  // reverse sort if toggle button has been pressed.
+  if (!sortUp) displayRows.reverse()
+
+  const toggleButton = (
+    <span className="toggle" onClick={() => sortUp = !sortUp}>
+      {!sortUp ? '👇' : '👆' }
+    </span>
+  )
+
   return (
+    <div>
+      <h1>CITY 🏙 WATCH</h1>
+
+      {<div className={`column-msg${columnMsgClass}`}>
+        {columnMsg}
+      </div>}
+
       <table>
         <thead>
           <tr>
@@ -34,7 +112,7 @@ export default ({match, rows}) => {
         </thead>
 
         <tbody>
-          {rows.map((row, rowIndex) => (
+          {displayRows.map((row, rowIndex) => (
             <tr key={`row-${rowIndex}`}>
               {headings.map((column, colIndex) => (
                 <td key={`column-${colIndex}`}>
