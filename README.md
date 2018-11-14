@@ -1,8 +1,8 @@
 # CITY 🏙 WATCH
 
-## A table ranking cities by their high-rise building credentials.
+## A table ranking cities by their high-rise building credentials.
 
-## Technologies used in this project:
+## Technologies used in this project:
 
 * React, React-DOM and React-DOM-router for UI and URL Param matching.
 * Parcel for lightweight bundling.
@@ -10,7 +10,7 @@
 * PapaParse for CSV file-parsing.
 * SCSS.
 
-## Instructions for serving the bundle locally:
+## Instructions for serving the bundle locally:
 
 * Clone the repo.
 * Hit `npm install`, then `npm run dev`.
