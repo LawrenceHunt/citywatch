@@ -1,0 +1,26 @@
+{
+  "name": "citywatch",
+  "version": "1.0.0",
+  "description": "Rank cities by hi-rise buildings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.1.5",
+    "papaparse": "^4.6.1",
+    "parcel": "^1.10.3",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1"
+  },
+  "devDependencies": {
+    "sass": "^1.14.3"
+  }
+}
